@@ -39,7 +39,7 @@ public:
         CheckRoomBusy = -1;
         Price = 0;
     }
-    ~HotelRoom() {}
+    //~HotelRoom() {}
     HotelRoom(int NNumberRoom, int RRoomCapacity, string RRoomClass, int CCheckRoomBusy, int PPrice) 
     {
         NumberRoom = NNumberRoom;
@@ -96,6 +96,30 @@ public:
         P = Price;
     }
 };
+class Guest
+{
+private:
+    int ID;
+public:
+    string SurnameGuest;
+    string NameGuest;
+    Guest()
+    {
+        SurnameGuest = "";
+        NameGuest = "";
+    }
+    Guest(string Surname, string Name)
+    {
+        SurnameGuest = Surname;
+        NameGuest = Name;
+    }
+    void SetGuest()
+    {
+        cout << "Введите Фамилию Гостя : ";
+        cin >> SurnameGuest;
+        cout << "Введите ";
+    }
+};
 void PrintChoise()
 {
     cout << "Выберете действие, которое хотите совершить : " << endl;
@@ -103,9 +127,11 @@ void PrintChoise()
     cout << "2. Изменить информацию о номере гостиницы" << endl;
     cout << "3. Удалить номер из номерного фонда гостиницы" << endl;
     cout << "4. Вывести все свободные номера" << endl;
-    cout << "5. Проверить информацию о госте" << endl;
-    cout << "6. Заполнить информацию о новом госте и предложить номер" << endl;
-    cout << "7. Закончить сессию" << endl;
+    cout << "5. Вывести все номера в гостинице" << endl;
+    cout << "6. Вывести текст из файлов на экран" << endl;
+    cout << "7. Проверить информацию о госте" << endl;
+    cout << "8. Заполнить информацию о новом госте и предложить номер" << endl;
+    cout << "9. Закончить сессию" << endl;
 }
 
 ostream& operator<< (ostream& os, HotelRoom& room)
@@ -168,7 +194,6 @@ void NewRoom()
     fin.open(AllRooms, fstream::in);
     AllRRooms();
     cout << endl;
-    fin.close();
     RRRoom2.SetRoom();
     RRRoom2.GetRoom();
     RRRoom2.GetNumberRoom();
@@ -178,13 +203,13 @@ void NewRoom()
     name = path + numberR + last;
     fout.open(name);
     fout.write((char*)&RRRoom2, sizeof(HotelRoom));
-    fout.close();
     fin.open(name);
     fin.read((char*)&RRoom2, sizeof(HotelRoom));
-    fin.close();
     RRoom2.GetRoom();
     cout <<"Номер успешно создан!"<<endl;
     cout << "YES" << endl;
+    fin.close();
+    fout.close();
 }
 void DeleteRoom()
 {
@@ -219,24 +244,24 @@ void ChangeRoom()
     cin >> num;
     ss << num;
     path = path + ss.str() + last;
-    fout.open(path, fstream::in | fstream::out | fstream::app);
+    /*fin.open(path, fstream::in | fstream::out | fstream::app);
     fin >> RRoom;
-    fin.close();
-    /*fin.open(path);
-    fin.read((char*)&RRoom, sizeof(HotelRoom));
     fin.close();*/
+    fin.open(path);
+    fin.read((char*)&RRoom, sizeof(HotelRoom));
     RRoom.GetRoom();
     RRoom.ChangeRoomCapacity();
     cout << endl;
     //RRoom.GetRoom();
     fout.open(path);
     fout.write((char*)&RRoom, sizeof(HotelRoom));
-   // RRoom.GetRoom();
+    RRoom.GetRoom();
+    fin.close();
     fout.close();
 }
 void FreeRooms()
 {
-    ofstream fout;
+    //ofstream fout;
     ifstream fin;
     HotelRoom RRRoom, RRoom;
     //istringstream iss;
@@ -254,22 +279,21 @@ void FreeRooms()
         qqq = *i;
         qqq.erase(0, 5);
         qqq.erase(qqq.length() - 4, 4);
-        istringstream iss(qqq, istringstream::in);
+        stringstream iss(qqq, istringstream::in);
         iss >> num;
         name = path + qqq + last;
         //HotelRoom RRRoom, RRoom;
        //fout.close();
-        /*fin.open(name, fstream::in | fstream::out | fstream::app);
-        fin >> RRRoom;
-        cout << RRRoom << endl;*/
+       // fout.open(name, fstream::in | fstream::out | fstream::app);
+        //fout << RRRoom;
+        //cout << RRRoom << endl;
         fin.open(name);
         fin.read((char*)&RRoom, sizeof(HotelRoom));
-        fin.close();
        // RRoom.GetRoom();
         //RRRoom.GetStatusRoom();
         if (RRoom.CheckRoomBusy == 0)
         {
-            cout << RRoom.NumberRoom << endl;
+            cout << RRoom.NumberRoom << " ";
         }
        // cout << q << endl;
         //fin.close();
@@ -279,15 +303,17 @@ void FreeRooms()
         //RRoom.~HotelRoom();
         //RRoom.GetRoom();
        qqq = "";
-       cout << "YES" << endl;
+       //cout << "YES" << endl;
+       fin.close();
     }
     cout << endl;
+    //fin.close();
 }
 
 int main()
 
 {
-    //setlocale(LC_ALL, "ru");
+    setlocale(LC_ALL, "ru");
     int n = 0, i = 0, t = 0, z;
     int q = 1;
     int a = 0;
@@ -331,10 +357,11 @@ int main()
     case 5:
         cout << "Вы ввели 5" << endl;
         AllRRooms();
+        cout << endl;
         break;
     case 6:
         cout << "Вы ввели 6" << endl;
-        fin.open("Rooms/Room-101.txt");
+        fin.open("Rooms/Room-106.txt");
         fin.read((char*)&RRoom3, sizeof(HotelRoom));
         fin.close();
         RRoom3.GetRoom();
@@ -350,7 +377,11 @@ int main()
         fin.read((char*)&RRoom3, sizeof(HotelRoom));
         fin.close(); 
         RRoom3.GetRoom();
-        fin.open("Rooms/Room-1105.txt");
+        fin.open("Rooms/Room-105.txt");
+        fin.read((char*)&RRoom3, sizeof(HotelRoom));
+        fin.close();
+        RRoom3.GetRoom();
+        fin.open("Rooms/Room-106.txt");
         fin.read((char*)&RRoom3, sizeof(HotelRoom));
         fin.close();
         RRoom3.GetRoom();
@@ -360,6 +391,7 @@ int main()
         cout << "Спасибо за вашу работу!" << endl;
         t = 7;
         break;
+
     default:
         cout << "Введено неправильно значение" << endl;
         break;
