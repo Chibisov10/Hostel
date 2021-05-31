@@ -1,6 +1,7 @@
 ﻿// Hostel.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -13,7 +14,7 @@
 #include <cstdio>
 
 using namespace std;
-  //  using std::filesystem;
+//  using std::filesystem;
 class HotelRoom //Создаем класс НОМЕР
 {
 private:
@@ -30,7 +31,7 @@ public:
     int Price;
     //int RoomCapacity;
     int N, C, P, Check;
-    string RClass;  
+    string RClass;
     HotelRoom()
     {
         NumberRoom = 0;
@@ -39,8 +40,8 @@ public:
         CheckRoomBusy = -1;
         Price = 0;
     }
-    //~HotelRoom() {}
-    HotelRoom(int NNumberRoom, int RRoomCapacity, string RRoomClass, int CCheckRoomBusy, int PPrice) 
+    ~HotelRoom() {}
+    HotelRoom(int NNumberRoom, int RRoomCapacity, string RRoomClass, int CCheckRoomBusy, int PPrice)
     {
         NumberRoom = NNumberRoom;
         RoomCapacity = RRoomCapacity;
@@ -103,6 +104,7 @@ private:
 public:
     string SurnameGuest;
     string NameGuest;
+    string Sur, Name;
     Guest()
     {
         SurnameGuest = "";
@@ -117,7 +119,20 @@ public:
     {
         cout << "Введите Фамилию Гостя : ";
         cin >> SurnameGuest;
-        cout << "Введите ";
+        cout << "Введите Имя Гостя : ";
+        cin >> NameGuest;
+    }
+    void GetGuest() // Функция вывода номера
+    {
+        cout << SurnameGuest << " " << NameGuest<< endl;
+    }
+    void GetSurnameGuest()
+    {
+        Sur = SurnameGuest;
+    }
+    void GetNameGuest()
+    {
+        Name = NameGuest;
     }
 };
 void PrintChoise()
@@ -131,7 +146,8 @@ void PrintChoise()
     cout << "6. Вывести текст из файлов на экран" << endl;
     cout << "7. Проверить информацию о госте" << endl;
     cout << "8. Заполнить информацию о новом госте и предложить номер" << endl;
-    cout << "9. Закончить сессию" << endl;
+    cout << "9. Просто фигня";
+    cout << "10. Закончить сессию" << endl;
 }
 
 ostream& operator<< (ostream& os, HotelRoom& room)
@@ -148,7 +164,7 @@ istream& operator>> (istream& is, HotelRoom& room)
 
 struct path_leaf_string
 {
-    string operator()(const filesystem::directory_entry & entry) const
+    string operator()(const filesystem::directory_entry& entry) const
     {
         return entry.path().filename().string();
     }
@@ -164,7 +180,7 @@ void AllRRooms()
 {
     ofstream fout;
     ifstream fin;
-    string NoNo = "C:\\Users\\new_c_000\\source\\repos\\Hostel\\Hostel\\Rooms";
+    string NoNo = "C:\\Users\\Admin\\source\\repos\\Hostel\\Hostel\\Rooms";
     string AllRooms = "Room-all.txt";
     string qqq;
     //HotelRoom RRRoom;
@@ -206,7 +222,7 @@ void NewRoom()
     fin.open(name);
     fin.read((char*)&RRoom2, sizeof(HotelRoom));
     RRoom2.GetRoom();
-    cout <<"Номер успешно создан!"<<endl;
+    cout << "Номер успешно создан!" << endl;
     cout << "YES" << endl;
     fin.close();
     fout.close();
@@ -225,7 +241,7 @@ void DeleteRoom()
     path = path + ss.str() + last;
     cout << path << endl;
     if (remove(path.c_str()) != 0)
-       cout << "Такого номера не было";
+        cout << "Такого номера не было";
     else cout << "Номер успешно удален из гостиничного фонда!";
     cout << endl;
 }
@@ -265,18 +281,22 @@ void FreeRooms()
     ifstream fin;
     HotelRoom RRRoom, RRoom;
     //istringstream iss;
-    string NoNo = "C:\\Users\\new_c_000\\source\\repos\\Hostel\\Hostel\\Rooms";
+    string NoNo = "C:\\Users\\Admin\\source\\repos\\Hostel\\Hostel\\Rooms";
     string path = "Rooms/Room-", last = ".txt", name;
     string AllRooms = "Room-all.txt";
-    string qqq, q="";
+    string qqq, q = "";
     int num;
+    int qwer;
+    stringstream ss;
     vector<string> stringvec;
     read_directory(NoNo, stringvec);
     for (vector<string>::const_iterator i = stringvec.begin(); i != stringvec.end(); ++i)
     {
-       // cout << *i << endl;
-       // fout.open(AllRooms, fstream::in | fstream::out | fstream::app);
+         //cout << *i << endl;
+        // fout.open(AllRooms, fstream::in | fstream::out | fstream::app);
         qqq = *i;
+        //stringstream iiss(*i, istringstream::in);
+      //  iiss >> qqq;
         qqq.erase(0, 5);
         qqq.erase(qqq.length() - 4, 4);
         stringstream iss(qqq, istringstream::in);
@@ -289,27 +309,110 @@ void FreeRooms()
         //cout << RRRoom << endl;
         fin.open(name);
         fin.read((char*)&RRoom, sizeof(HotelRoom));
-       // RRoom.GetRoom();
-        //RRRoom.GetStatusRoom();
+        // RRoom.GetRoom();
+         //RRRoom.GetStatusRoom();
         if (RRoom.CheckRoomBusy == 0)
         {
             cout << RRoom.NumberRoom << " ";
         }
-       // cout << q << endl;
-        //fin.close();
-      // cout << num << endl;
-       num = 0;
-      // cout << num << endl;
-        //RRoom.~HotelRoom();
-        //RRoom.GetRoom();
-       qqq = "";
-       //cout << "YES" << endl;
-       fin.close();
+        // cout << q << endl;
+         //fin.close();
+       // cout << num << endl;
+        //num = 0;
+        // cout << num << endl;
+          //RRoom.~HotelRoom();
+          //RRoom.GetRoom();
+        //qqq = "";
+        //cout << "YES" << endl;
+        fin.close();
     }
     cout << endl;
     //fin.close();
+    
 }
-
+int CheckPastGuest(string CheckName)
+{
+    string SurFirstName, Sstr;
+    int CheckId = 0;
+    ofstream fout;
+    ifstream fin;
+    string NoNo = "C:\\Users\\Admin\\source\\repos\\Hostel\\Hostel\\Guests";
+    string AllGuests = "Guest-all.txt";
+    vector<string> stringvec;
+    read_directory(NoNo, stringvec);
+    for (vector<string>::const_iterator i = stringvec.begin(); i != stringvec.end(); ++i)
+    {
+        //cout << *i << endl;
+        fout.open(AllGuests, fstream::in | fstream::out | fstream::app);
+        SurFirstName = *i;
+        SurFirstName.erase(SurFirstName.length() - 4, 4);
+        if (CheckName == SurFirstName)
+        {
+            CheckId = 1;
+        }
+    }
+    fout.close();
+    return CheckId;
+}
+void NewGuest()
+{
+    Guest GGuest;
+    int CheckPast = 0;
+   // stringstream ss;
+    string path = "Guests/", last = ".txt", numberR = "", name, SurN, FName, GuestCheck; /*AllRooms = "Room-all.txt";*/
+   // ofstream fout;
+    ifstream fin;
+    char ch;
+    //fin.open(AllRooms, fstream::in);
+    GGuest.SetGuest();
+    SurN = GGuest.SurnameGuest;
+    FName = GGuest.NameGuest;
+    GuestCheck = SurN + "-" + FName;
+    CheckPast = CheckPastGuest(GuestCheck);
+    if (CheckPast == 1)
+    {
+        cout << "Этот гость у нас уже был!" << endl;
+       /* name = path + SurN + "-" + FName + last;
+        fout.open(name, fstream::in | fstream::out | fstream::app);
+  */
+    }
+    else {
+        name = path + SurN + "-" + FName + last;
+        ofstream fout(name.c_str());
+        //fout.write((char*)&GGuest, sizeof(Guest));
+       // fin.open(name);
+        //fin.read((char*)&GGuest, sizeof(Guest));
+        GGuest.GetGuest();
+        cout << "Предложите гостю свободные номер!" << endl;
+        FreeRooms();
+        cout << "Гость успешно создан!" << endl;
+        cout << "YES" << endl;
+       // fin.close();
+        fout.close();
+    }
+}
+void AllGuest()
+{
+    ofstream fout;
+    ifstream fin;
+    string NoNo = "C:\\Users\\Admin\\source\\repos\\Hostel\\Hostel\\Guests";
+    string AllGuests = "Guest-all.txt";
+    string qqq;
+    //HotelRoom RRRoom;
+    vector<string> stringvec;
+    read_directory(NoNo, stringvec);
+    for (vector<string>::const_iterator i = stringvec.begin(); i != stringvec.end(); ++i)
+    {
+        //cout << *i << endl;
+        fout.open(AllGuests, fstream::in | fstream::out | fstream::app);
+        qqq = *i;
+        //qqq.erase(0, 6);
+        qqq.erase(qqq.length() - 4, 4);
+        fout.write((char*)&qqq, sizeof(qqq));
+        cout << qqq << endl;
+        fout.close();
+    }
+}
 int main()
 
 {
@@ -321,9 +424,9 @@ int main()
     // stringstream ss;
      //string path = "Rooms/Room-", last = ".txt", numberR = "", name, AllRooms="Rooms/Room-all.txt";
     string NameUser;
-    //string NoNo = "C:\\Users\\new_c_000\\source\\repos\\Hostel\\Hostel\\Rooms";
-     ofstream fout;
-     ifstream fin;
+    //string NoNo = "C:\Users\Admin\source\repos\Hostel\Hostel";
+    ofstream fout;
+    ifstream fin;
     HotelRoom First[60];
     HotelRoom RRoom3;
     vector<string> stringvec;
@@ -331,113 +434,139 @@ int main()
     cout << "Введите ваше имя : ";
     cin >> NameUser;
     cout << "Здравствуйте, " << NameUser << "!" << endl;
-    while (t != 7) 
+    while (t != 10)
     {
-    PrintChoise();
-    cin >> t;
-    switch (t)
-    {
-    case 1:
-        cout << "Вы ввели 1" << endl;
-        NewRoom();
-        cout << "Хорошо!" << endl;
-        break;
-    case 2:
-        cout << "Вы ввели 2" << endl;
-        ChangeRoom();
-        break;
-    case 3:
-        cout << "Вы ввели 3" << endl;
-        DeleteRoom();
-        break;
-    case 4:
-        cout << "Вы ввели 4" << endl;
-        FreeRooms();
-        break;
-    case 5:
-        cout << "Вы ввели 5" << endl;
-        AllRRooms();
-        cout << endl;
-        break;
-    case 6:
-        cout << "Вы ввели 6" << endl;
-        fin.open("Rooms/Room-106.txt");
-        fin.read((char*)&RRoom3, sizeof(HotelRoom));
-        fin.close();
-        RRoom3.GetRoom();
-        fin.open("Rooms/Room-102.txt");
-        fin.read((char*)&RRoom3, sizeof(HotelRoom));
-        fin.close();
-        RRoom3.GetRoom();
-        fin.open("Rooms/Room-103.txt");
-        fin.read((char*)&RRoom3, sizeof(HotelRoom));
-        fin.close();
-        RRoom3.GetRoom();
-        fin.open("Rooms/Room-104.txt");
-        fin.read((char*)&RRoom3, sizeof(HotelRoom));
-        fin.close(); 
-        RRoom3.GetRoom();
-        fin.open("Rooms/Room-105.txt");
-        fin.read((char*)&RRoom3, sizeof(HotelRoom));
-        fin.close();
-        RRoom3.GetRoom();
-        fin.open("Rooms/Room-106.txt");
-        fin.read((char*)&RRoom3, sizeof(HotelRoom));
-        fin.close();
-        RRoom3.GetRoom();
-        break;
-    case 7:
-        cout << "Вы ввели 7" << endl;
-        cout << "Спасибо за вашу работу!" << endl;
-        t = 7;
-        break;
-
-    default:
-        cout << "Введено неправильно значение" << endl;
-        break;
+        PrintChoise();
+        cin >> t;
+        switch (t)
+        {
+        case 1:
+            cout << "Вы ввели 1" << endl;
+            NewRoom();
+            cout << "Хорошо!" << endl;
+            break;
+        case 2:
+            cout << "Вы ввели 2" << endl;
+            ChangeRoom();
+            break;
+        case 3:
+            cout << "Вы ввели 3" << endl;
+            DeleteRoom();
+            break;
+        case 4:
+            cout << "Вы ввели 4" << endl;
+            FreeRooms();
+            break;
+        case 5:
+            cout << "Вы ввели 5" << endl;
+            AllRRooms();
+            cout << endl;
+            break;
+        case 6:
+            cout << "Вы ввели 6" << endl;
+            fin.open("Rooms/Room-101.txt");
+            fin.read((char*)&RRoom3, sizeof(HotelRoom));
+            fin.close();
+            RRoom3.GetRoom();
+            fin.open("Rooms/Room-102.txt");
+            fin.read((char*)&RRoom3, sizeof(HotelRoom));
+            fin.close();
+            RRoom3.GetRoom();
+            fin.open("Rooms/Room-103.txt");
+            fin.read((char*)&RRoom3, sizeof(HotelRoom));
+            fin.close();
+            RRoom3.GetRoom();
+            fin.open("Rooms/Room-104.txt");
+            fin.read((char*)&RRoom3, sizeof(HotelRoom));
+            fin.close();
+            RRoom3.GetRoom();
+            fin.open("Rooms/Room-105.txt");
+            fin.read((char*)&RRoom3, sizeof(HotelRoom));
+            fin.close();
+            RRoom3.GetRoom();
+            fin.open("Rooms/Room-106.txt");
+            fin.read((char*)&RRoom3, sizeof(HotelRoom));
+            fin.close();
+            RRoom3.GetRoom();
+            fin.open("Rooms/Room-107.txt");
+            fin.read((char*)&RRoom3, sizeof(HotelRoom));
+            fin.close();
+            RRoom3.GetRoom();
+            fin.open("Rooms/Room-108.txt");
+            fin.read((char*)&RRoom3, sizeof(HotelRoom));
+            fin.close();
+            RRoom3.GetRoom();
+            fin.open("Rooms/Room-109.txt");
+            fin.read((char*)&RRoom3, sizeof(HotelRoom));
+            fin.close();
+            RRoom3.GetRoom();
+            fin.open("Rooms/Room-110.txt");
+            fin.read((char*)&RRoom3, sizeof(HotelRoom));
+            fin.close();
+            RRoom3.GetRoom();
+            break;
+        case 7:
+            cout << "Вы ввели 7" << endl;
+            NewGuest();
+            break;
+        case 8:
+            cout << "Вы ввели 8" << endl;
+            //NewGuest();
+            break;
+        case 9:
+            cout << "Вы ввели 9" << endl;
+            AllGuest();
+            cout << "Прекрасно!" << endl;
+        case 10:
+            cout << "Вы ввели 10" << endl;
+            cout << "Спасибо за вашу работу!" << endl;
+            t = 10;
+            break;
+        default:
+            cout << "Введено неправильно значение" << endl;
+            break;
+        }
     }
-}
-     //Заводим информацию о комнатах
-     /*while (q != 0)
+    //Заводим информацию о комнатах
+    /*while (q != 0)
+    {
+        First[n].SetRoom();
+        ss << n + 1;
+        numberR = ss.str();
+        ss.str("");
+        name = path + numberR + last;
+        fout.open(name);
+        fout.write((char*)&First[n], sizeof(HotelRoom));
+        fout.close();
+        fout.open(AllRooms, fstream::in| fstream::out| fstream::app);
+        First[n].GetNumberRoom();
+        fout<<First[n].N<<" ";
+        fout.close();
+        cout << endl;
+        cout << "Is that all the rooms in the hostel ? (Yes - 0, No - 1)" << endl;
+        cin >> q;
+        n += 1;
+    }*/
+
+    /* cout << "All available rooms : " << endl; //Выводим все свободные номера
+     ss.str("");
+     for (i = 0; i < n; i++)
      {
-         First[n].SetRoom();
-         ss << n + 1;
+         ss << i+1 ;
          numberR = ss.str();
          ss.str("");
          name = path + numberR + last;
-         fout.open(name);
-         fout.write((char*)&First[n], sizeof(HotelRoom));
-         fout.close();
-
-         fout.open(AllRooms, fstream::in| fstream::out| fstream::app);
-         First[n].GetNumberRoom();
-         fout<<First[n].N<<" ";
-         fout.close();
-         cout << endl;
-         cout << "Is that all the rooms in the hostel ? (Yes - 0, No - 1)" << endl;
-         cin >> q;
-         n += 1;
+         //cout << name << endl;
+         fin.open(name);
+         fin.read((char*)&RRoom, sizeof(HotelRoom));
+        // cout << "YES" << endl;
+         RRoom.GetStatusRoom();
+         if (RRoom.Check == 0)
+         {
+            RRoom.GetNumberRoom();
+         }
+         fin.close();
      }*/
-
-     /* cout << "All available rooms : " << endl; //Выводим все свободные номера
-      ss.str("");
-      for (i = 0; i < n; i++)
-      {
-          ss << i+1 ;
-          numberR = ss.str();
-          ss.str("");
-          name = path + numberR + last;
-          //cout << name << endl;
-          fin.open(name);
-          fin.read((char*)&RRoom, sizeof(HotelRoom));
-         // cout << "YES" << endl;
-          RRoom.GetStatusRoom();
-          if (RRoom.Check == 0)
-          {
-             RRoom.GetNumberRoom();
-          }
-          fin.close();
-      }*/
 
     cout << "All";
 
